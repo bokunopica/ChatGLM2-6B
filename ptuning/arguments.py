@@ -59,6 +59,9 @@ class ModelArguments:
     prefix_projection: bool = field(
         default=False
     )
+    unfreeze_layers: str = field(
+        default=None,
+    )
 
 
 @dataclass

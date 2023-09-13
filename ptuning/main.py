@@ -129,6 +129,19 @@ def main():
         # P-tuning v2
         model = model.half()
         model.transformer.prefix_encoder.float()
+
+    elif model_args.unfreeze_layers:
+        print('--------------unfreeze------------------')
+        unfreeze_layers = model_args.unfreeze_layers.split(',')
+        for layer in unfreeze_layers:
+            for name, param in model.named_parameters():
+                if not name.startswith(f'transformer.encoder.layers.{layer}.'):
+                    param.requires_grad_(False)
+                    param.half()
+                else:
+                    print(f"{name} unfreeze")
+                    param.float()
+        print('--------------unfreeze------------------')
     else:
         # Finetune
         model = model.float()
